@@ -51,7 +51,7 @@
 | Low-level systems & memory | Applying | Stack growth direction & its role in buffer-overflow exploitation; wrote a C++ probe to determine stack direction at runtime using `volatile`, `asm volatile` barriers, dynamic loading (x86_64, WSL2). Don't dumb this down. | 2026-07-15 (seed) |
 | Linux / CLI | Applying | Roppers Linux Certificate; Bandit through ~L15; `find` scripting; bash fundamentals; netcat; OpenSSL SSL/TLS. | 2026-07-15 (seed) |
 | Security / CTF | Learning | Roppers Computing Fundamentals; OverTheWire Bandit; buffer-overflow theory. Security instinct: proactively refused to grant home-directory access before any guardrail was offered. | 2026-07-15 |
-| Git / GitHub | Learning | Learning fundamentals; setting up the `ais-tracker` repo. | 2026-07-15 (seed) |
+| Git / GitHub | Applying | Deep session: commit = hashed snapshot + parent pointer; staging vs. commit (three zones); branch = movable pointer; fast-forward vs. two-parent merge; Git-vs-GitHub / distributed model; divergence. Ran a real merge-conflict resolution on `learning-primer` (resolve → add → commit → push, two-parent merge commit) and diagnosed the divergence root cause unaided. | 2026-07-19 |
 | Docker / containerization | Learning | namespaces, cgroups, Docker/WSL2 architecture. | 2026-07-15 (seed) |
 | Python | Learning | LeetCode at a beginner level (linked lists, sliding window). Comfortable reading more than writing from scratch. | 2026-07-15 (seed) |
 | Message brokers / event-driven | Learning | Producer/consumer/message, decoupling (space/time/rate), pub/sub vs. work queue, acks, durability, delivery semantics, idempotency; derived at-least-once & idempotency unaided from a deli-counter model, anchored to `ais-tracker` pub/sub. | 2026-07-15 |
@@ -81,7 +81,7 @@ i am still very new to the field of tech and cybersecurity. my goal is to become
 
 ## 5. Skills / concepts  *(the tracked list — the tool updates this)*
 
-**Recently mastered:** Unit clause & unit propagation (2026-07-19).
+**Recently mastered:** Commit as immutable hashed snapshot (2026-07-19); Git divergence & pull-before-work (2026-07-19); Unit clause & unit propagation (2026-07-19).
 
 <!-- skills:auto:start -->
 | Skill | Stage | Evidence | Last touched |
@@ -115,6 +115,14 @@ i am still very new to the field of tech and cybersecurity. my goal is to become
 | De Morgan's laws | New | Introduced as the mechanism behind every learned clause. Not yet applied independently. | 2026-07-19 |
 | Backjumping (non-chronological) | Learning | Correctly derived that the learned clause becomes unit and forces s=false. Missed the second-highest-level rule and believed unrelated assignments survive the jump. | 2026-07-19 |
 | Implication graph | New | Explained as the bookkeeping behind conflict analysis; not yet traced one by hand. | 2026-07-19 |
+| Commit as immutable hashed snapshot | Understood (evidence) | Taught back hash/immutability reasoning unaided; connected single-char change → different hash independently; grasped tamper-evident hash chain (linked to OpenSSL crypto hashing). | 2026-07-19 |
+| Staging area vs. commit (three zones) | Applying | Correctly split `add` (stage) from `commit` (snapshot); initial staging↔committing conflation corrected. | 2026-07-19 |
+| Branch as movable pointer | Learning | Modeled a branch as a file snapshot/copy; corrected via on-disk demo (a ~40-byte ref to one commit); then read HEAD correctly. | 2026-07-19 |
+| Fast-forward merge | Applying | Predicted the merge commands; watched `main`'s pointer slide forward with no new commit. | 2026-07-19 |
+| Merge commit (two parents) | Applying | Derived that a diverged history needs a newly-created commit; corrected the "pick a winner by timestamp / discard a side" misconception; created a real two-parent merge commit. | 2026-07-19 |
+| Git vs. GitHub (local vs. remote) | Applying | Corrected "GitHub wraps the git command"; grasped Git = local distributed VCS, GitHub = one remote host + collab layer; used `origin` / `origin/main` / push / fetch / pull. | 2026-07-19 |
+| Merge-conflict resolution (keep-both) | Applying | Understood a conflict isn't "pick a winner"; kept both real sessions, drove the ordering, checked for leftover markers, used `add` to signal resolved. | 2026-07-19 |
+| Merge vs. rebase | Learning | Learned rebase replays commits onto the remote tip and rewrites hashes (new parent → new hash); chose merge deliberately. | 2026-07-19 |
 <!-- skills:auto:end -->
 
 ---
@@ -128,6 +136,8 @@ i am still very new to the field of tech and cybersecurity. my goal is to become
 - **SAT/CDCL:** I say "backtrack to clause N" — decisions and backtracking operate on variables; clauses are only checked.
 - **SAT/CDCL:** when a literal like ¬x evaluates false, I read it as "x is false" rather than "that side of the OR is dead, the other side is forced."
 - **Boolean algebra:** negating a combination — I push ¬ onto each variable but leave the connective unflipped (De Morgan).
+- **Git:** I conflate "staging" with "committing" — `add` stages to the index, `commit` writes the snapshot; they're separate zones.
+- **Git:** I model a branch as a copy/snapshot of files — it's a movable ~40-byte pointer to a single commit, not a copy.
 <!-- traps:auto:end -->
 
 **Writing typos to flag** *(hand-owned)*
