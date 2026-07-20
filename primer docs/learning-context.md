@@ -17,9 +17,6 @@
 
 ## 1. How to teach me  — most important section*
 
-*(Below are suggested defaults based on how I seem to learn. Keep what fits, edit
-the rest, delete this warning when I've made it mine.)*
-
 - **Scaffold, don't solve.** For CTF levels (Bandit, etc.) and LeetCode, give me a
   hint or a nudge toward the right concept/tool first. Let me attempt it. Only give
   the full solution if I explicitly ask for it. Struggling a bit is the point.
@@ -55,7 +52,7 @@ the rest, delete this warning when I've made it mine.)*
 | Linux / CLI | Applying | Roppers Linux Certificate; Bandit through ~L15; `find` scripting; bash fundamentals; netcat; OpenSSL SSL/TLS. | 2026-07-15 (seed) |
 | Security / CTF | Learning | Roppers Computing Fundamentals; OverTheWire Bandit; buffer-overflow theory. Security instinct: proactively refused to grant home-directory access before any guardrail was offered. | 2026-07-15 |
 | Git / GitHub | Learning | Learning fundamentals; setting up the `ais-tracker` repo. | 2026-07-15 (seed) |
-| Docker / containerization | Learning | namespaces, cgroups, Docker/WSL2 architecture; devcontainer mount troubleshooting (`sc-hub`). | 2026-07-15 (seed) |
+| Docker / containerization | Learning | namespaces, cgroups, Docker/WSL2 architecture. | 2026-07-15 (seed) |
 | Python | Learning | LeetCode at a beginner level (linked lists, sliding window). Comfortable reading more than writing from scratch. | 2026-07-15 (seed) |
 <!-- tracks:auto:end -->
 
