@@ -54,6 +54,7 @@
 | Git / GitHub | Learning | Learning fundamentals; setting up the `ais-tracker` repo. | 2026-07-15 (seed) |
 | Docker / containerization | Learning | namespaces, cgroups, Docker/WSL2 architecture. | 2026-07-15 (seed) |
 | Python | Learning | LeetCode at a beginner level (linked lists, sliding window). Comfortable reading more than writing from scratch. | 2026-07-15 (seed) |
+| Message brokers / event-driven | Learning | Producer/consumer/message, decoupling (space/time/rate), pub/sub vs. work queue, acks, durability, delivery semantics, idempotency; derived at-least-once & idempotency unaided from a deli-counter model, anchored to `ais-tracker` pub/sub. | 2026-07-15 |
 | SAT solvers / constraint solving | Learning | Built DPLL from first principles by hand (unit propagation, decisions, backtracking, UNSAT via exhausted decision space). Executed a full CDCL cycle on a rigged formula: derived the learned clause, identified backjump target. Motivated by symbolic execution / angr / Z3 on the security side. | 2026-07-19 |
 <!-- tracks:auto:end -->
 
@@ -97,6 +98,14 @@ i am still very new to the field of tech and cybersecurity. my goal is to become
 | LeetCode: linked-list addition | Learning | Solved at a beginner level. | 2026-07-15 (seed) |
 | LeetCode: sliding-window substring | Learning | Solved at a beginner level. | 2026-07-15 (seed) |
 | Claude Code skill scoping (project vs. global) | Learning | Asked clarifying questions about `.claude` discovery, project vs. global scope, and the location-vs-file-access distinction; understood the explanation but hasn't applied or taught it back. | 2026-07-15 |
+| Message brokers (producer/consumer/pub-sub) | Applying | Built + corrected a deli-counter model; nailed decoupling (the ticket = time/rate decoupling); recognized `ais-tracker` as a pub/sub fan-out problem after correction. | 2026-07-15 |
+| Work queue vs. pub/sub | Learning | Learned the distinction; correctly saw his project needs fan-out to all three consumers, though the deli analogy drifted. | 2026-07-15 |
+| Scatter-gather vs. pub/sub | Learning | His deli-order example inadvertently described scatter-gather; learned to separate divided+reassembled from copied+independent. | 2026-07-15 |
+| Acknowledgments (acks) | Applying | Derived the hold-until-confirmed mechanism unaided; later explained redelivery-on-missing-ack. Corrected: a second ack can't fix in-transit loss. | 2026-07-15 |
+| Durable subscriptions | Learning | Learned durability covers the offline (Case 2) consumer, distinct from acks; corrected that guarantees are opted into, not chosen by the broker. | 2026-07-15 |
+| Delivery semantics (at-least-once et al.) | Applying | Derived at-least-once behavior unaided ("user might get 2 notifications"); learned the at-most/at-least/exactly-once trio. | 2026-07-15 |
+| Idempotency (→ effectively-once) | Applying | Derived check-before-acting unaided (if-then loop); corrected that dedup memory must be durable/external, not in-process, and that a crash can fall in the fire/log gap. | 2026-07-15 |
+| Failure-mode asymmetry (loud vs. silent) | Understood (evidence) | Independently chose fire-then-log and explained the cost asymmetry — a silent miss is worse than a visible duplicate. | 2026-07-15 |
 | CNF / propositional notation (∧ ∨ ¬) | Applying | Connected symbols to logic gates unprompted; asked for the mapping rather than guessing. | 2026-07-19 |
 | Unit clause & unit propagation | Understood (evidence) | Found the technique unaided on the first formula; applied it correctly through every subsequent example including the final CDCL backjump. | 2026-07-19 |
 | Decisions / branching | Applying | Derived "assign a variable and test it" independently when propagation stalled. | 2026-07-19 |
@@ -115,6 +124,7 @@ i am still very new to the field of tech and cybersecurity. my goal is to become
 <!-- traps:auto:start -->
 **Recurring mistakes** *(tool appends patterns it spots across sessions)*
 - **LeetCode:** I keep omitting the `class Solution:` wrapper — call it out.
+- **Message brokers:** reaches for an adjacent-but-wrong mechanism when distinguishing paired concepts (scatter-gather vs. pub/sub; durability vs. in-flight acks) — prompt to check "divided vs. copied" and "Case 1 in-flight vs. Case 2 offline."
 - **SAT/CDCL:** I say "backtrack to clause N" — decisions and backtracking operate on variables; clauses are only checked.
 - **SAT/CDCL:** when a literal like ¬x evaluates false, I read it as "x is false" rather than "that side of the OR is dead, the other side is forced."
 - **Boolean algebra:** negating a combination — I push ¬ onto each variable but leave the connective unflipped (De Morgan).
