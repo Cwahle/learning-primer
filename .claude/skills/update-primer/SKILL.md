@@ -17,9 +17,15 @@ compare it against the current primer, and rewrite only the auto-managed section
     user which one to use. Do not guess.
 - **Flags (optional):**
   - `--dry-run` — show the change report and proposed edits but write nothing.
+    Do **not** pull, write, commit, or push; instead `git fetch` and note in the
+    report whether the branch is behind `origin`.
   - `--apply` — skip the confirmation step and write immediately (still make a backup).
-  - Default (no flag) — **preview-then-confirm**: show the report and proposed edits,
-    then ask the user to confirm before writing.
+    Pull first, then write, then commit and push.
+  - `--no-push` — do everything (pull, write, commit) but skip the final push, leaving
+    the commit local. Combine with any mode.
+  - Default (no flag) — **preview-then-confirm**: pull first, show the report and
+    proposed edits, then ask the user to confirm before writing. On confirmation,
+    write, commit, and push.
 
 ## The primer file
 
@@ -28,6 +34,48 @@ that contains the `.claude/` directory this skill lives in). This keeps the skil
 portable across machines/OSes regardless of the absolute path. If it isn't at that
 relative path, search the project for `learning-context.md` before doing anything
 else. Read it fully before making any edits.
+
+## Git sync (pull before, push after)
+
+The primer lives in a git repo whose remote is the user's GitHub
+(`origin/main` → `github.com/Cwahle/learning-primer`). To keep versions consistent
+across machines and avoid merge conflicts, **always pull before touching the file and
+push after a successful write.** Run all git commands from the project root (the folder
+containing the `.claude/` this skill lives in), not from any nested repo.
+
+### Before any work — pull
+
+1. Confirm you're in the right repo and on `main` with an `origin/main` upstream
+   (`git rev-parse --abbrev-ref @{u}` → `origin/main`). If not, stop and report; don't
+   guess a remote or branch.
+2. Check for uncommitted changes to the primer (`git status --porcelain -- "primer docs/learning-context.md"`).
+   If it's already dirty, **stop and report** — don't pull over unsaved edits. (Ignored
+   backups and the untracked `learning-primer/` folder don't count and won't block.)
+3. Pull fast-forward only: `git pull --ff-only`.
+   - Success (fast-forward or already up to date): proceed.
+   - Fails because the branch **diverged** (local commits + remote commits): stop and
+     report. Do not auto-merge or rebase; let the user reconcile.
+   - Fails for network/auth reasons: stop and report the error. Don't proceed on a
+     possibly-stale file.
+4. Under `--dry-run`, replace the pull with `git fetch` and just note whether `main` is
+   behind `origin/main` — never mutate the working tree in dry-run.
+
+### After a successful write — commit and push
+
+1. Stage only the primer: `git add "primer docs/learning-context.md"`. Never `git add -A`
+   (backups are gitignored; the stray `learning-primer/` folder must not be committed).
+2. Commit with a message matching the existing history style:
+   `Update primer from <transcript-topic> session (<YYYY-MM-DD>)`
+   (e.g. `Update primer from git/github session (2026-07-19)`). Append the standard
+   Claude Code co-author trailer.
+3. Push: `git push`. If push is **rejected** because the remote moved ahead since the
+   pull, report it and suggest re-running (which will pull the new commits first) —
+   don't force-push.
+4. Skip commit and push entirely under `--dry-run` or `--no-push`. Under `--no-push`,
+   still commit locally and tell the user the commit is unpushed.
+
+If any git step fails, report exactly what failed and stop — never silently swallow a
+pull/push error, since that's what version control is here to prevent.
 
 ## What you may edit — and what you must never touch
 
@@ -103,32 +151,40 @@ hand-owned typo list below the markers.
 
 ## Procedure
 
-1. Resolve and read the primer file. Read the transcript file.
-2. Work out the changes: track/skill promotions, new rows, date stamps, recently-
+1. **Sync (pull):** follow the "Before any work — pull" steps in the Git sync section.
+   Stop and report if the repo is dirty, diverged, or the pull fails. (Dry-run: `git
+   fetch` and note behind/ahead status instead of pulling.)
+2. Resolve and read the primer file. Read the transcript file.
+3. Work out the changes: track/skill promotions, new rows, date stamps, recently-
    mastered, recurring mistakes — following the rules above.
-3. Build the **change report** (format below).
-4. **Backup:** before writing, copy the current primer to
+4. Build the **change report** (format below).
+5. **Backup:** before writing, copy the current primer to
    `primer docs/backups/learning-context.<YYYY-MM-DD-HHMMSS>.bak.md`.
    (Skip the backup only under `--dry-run`.)
-5. Apply per the flag:
+6. Apply per the flag:
    - `--dry-run`: print the report + the proposed new content of each changed region;
-     write nothing.
+     write nothing, commit nothing, push nothing.
    - default: print the report + proposed edits, then **ask the user to confirm**.
      On confirmation, make the backup and write. On decline, change nothing.
    - `--apply`: make the backup and write immediately, then print the report.
-6. Only ever rewrite content between the markers; leave the rest byte-for-byte intact.
+7. Only ever rewrite content between the markers; leave the rest byte-for-byte intact.
+8. **Sync (push):** after a successful write, follow the "After a successful write —
+   commit and push" steps in the Git sync section (staging only the primer). Skip under
+   `--dry-run` and `--no-push`. Report the push result in the change report.
 
 ## Change report format
 
 ```
 Primer update — <transcript filename> (<date>)
 
+⇣ Pulled     origin/main (<up to date | fast-forwarded N commits>)
 ✎ Promoted   "<skill>"  <old stage> → <new stage>   (<why, from transcript>)
 ＋ Added      "<skill>"  (<stage>)   (<why>)
 ✓ Mastered   "<skill>"  → Understood (<evidence|self-reported>)
 ⚠ Possible regression  "<skill>"  (<what you saw>) — left unchanged, your call
 ⧗ Recurring mistake logged: "<pattern>"
 · Unchanged  <n> tracked skills not touched this session
+⇡ Pushed     <commit sha> to origin/main   (or: commit left local under --no-push)
 ```
 
 Only include lines that apply. Keep it short and skimmable — this report is the main
