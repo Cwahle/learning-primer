@@ -54,6 +54,7 @@
 | Git / GitHub | Learning | Learning fundamentals; setting up the `ais-tracker` repo. | 2026-07-15 (seed) |
 | Docker / containerization | Learning | namespaces, cgroups, Docker/WSL2 architecture. | 2026-07-15 (seed) |
 | Python | Learning | LeetCode at a beginner level (linked lists, sliding window). Comfortable reading more than writing from scratch. | 2026-07-15 (seed) |
+| SAT solvers / constraint solving | Learning | Built DPLL from first principles by hand (unit propagation, decisions, backtracking, UNSAT via exhausted decision space). Executed a full CDCL cycle on a rigged formula: derived the learned clause, identified backjump target. Motivated by symbolic execution / angr / Z3 on the security side. | 2026-07-19 |
 <!-- tracks:auto:end -->
 
 ---
@@ -79,7 +80,7 @@ i am still very new to the field of tech and cybersecurity. my goal is to become
 
 ## 5. Skills / concepts  *(the tracked list — the tool updates this)*
 
-**Recently mastered:** _(none yet — will populate as skills hit Understood)_
+**Recently mastered:** Unit clause & unit propagation (2026-07-19).
 
 <!-- skills:auto:start -->
 | Skill | Stage | Evidence | Last touched |
@@ -96,6 +97,15 @@ i am still very new to the field of tech and cybersecurity. my goal is to become
 | LeetCode: linked-list addition | Learning | Solved at a beginner level. | 2026-07-15 (seed) |
 | LeetCode: sliding-window substring | Learning | Solved at a beginner level. | 2026-07-15 (seed) |
 | Claude Code skill scoping (project vs. global) | Learning | Asked clarifying questions about `.claude` discovery, project vs. global scope, and the location-vs-file-access distinction; understood the explanation but hasn't applied or taught it back. | 2026-07-15 |
+| CNF / propositional notation (∧ ∨ ¬) | Applying | Connected symbols to logic gates unprompted; asked for the mapping rather than guessing. | 2026-07-19 |
+| Unit clause & unit propagation | Understood (evidence) | Found the technique unaided on the first formula; applied it correctly through every subsequent example including the final CDCL backjump. | 2026-07-19 |
+| Decisions / branching | Applying | Derived "assign a variable and test it" independently when propagation stalled. | 2026-07-19 |
+| Backtracking (DPLL) | Learning | Reached for it at the right moment; needed correction that you backtrack on variables, not clauses. | 2026-07-19 |
+| UNSAT reasoning | Applying | Correctly concluded UNSAT twice; refined from "tried both clauses" to "every value of every decision variable dead-ends." | 2026-07-19 |
+| Learned clause derivation | Learning | Identified the correct literals (¬r, ¬s) but joined them with ∧ instead of ∨; corrected via De Morgan. | 2026-07-19 |
+| De Morgan's laws | New | Introduced as the mechanism behind every learned clause. Not yet applied independently. | 2026-07-19 |
+| Backjumping (non-chronological) | Learning | Correctly derived that the learned clause becomes unit and forces s=false. Missed the second-highest-level rule and believed unrelated assignments survive the jump. | 2026-07-19 |
+| Implication graph | New | Explained as the bookkeeping behind conflict analysis; not yet traced one by hand. | 2026-07-19 |
 <!-- skills:auto:end -->
 
 ---
@@ -105,6 +115,9 @@ i am still very new to the field of tech and cybersecurity. my goal is to become
 <!-- traps:auto:start -->
 **Recurring mistakes** *(tool appends patterns it spots across sessions)*
 - **LeetCode:** I keep omitting the `class Solution:` wrapper — call it out.
+- **SAT/CDCL:** I say "backtrack to clause N" — decisions and backtracking operate on variables; clauses are only checked.
+- **SAT/CDCL:** when a literal like ¬x evaluates false, I read it as "x is false" rather than "that side of the OR is dead, the other side is forced."
+- **Boolean algebra:** negating a combination — I push ¬ onto each variable but leave the connective unflipped (De Morgan).
 <!-- traps:auto:end -->
 
 **Writing typos to flag** *(hand-owned)*
