@@ -56,6 +56,7 @@
 | Python | Learning | LeetCode at a beginner level (linked lists, sliding window). Comfortable reading more than writing from scratch. | 2026-07-15 (seed) |
 | Message brokers / event-driven | Learning | Producer/consumer/message, decoupling (space/time/rate), pub/sub vs. work queue, acks, durability, delivery semantics, idempotency; derived at-least-once & idempotency unaided from a deli-counter model, anchored to `ais-tracker` pub/sub. | 2026-07-15 |
 | SAT solvers / constraint solving | Learning | Built DPLL from first principles by hand (unit propagation, decisions, backtracking, UNSAT via exhausted decision space). Executed a full CDCL cycle on a rigged formula: derived the learned clause, identified backjump target. Motivated by symbolic execution / angr / Z3 on the security side. | 2026-07-19 |
+| Compilers / language tooling | Learning | Abstract syntax trees from first principles: root = last-evaluated op, arity → child count, operator(internal)/operand(leaf), literal vs variable reference, discards surface syntax ("abstract"), post-order/bottom-up evaluation. Drew `eta = distance / speed` unaided. Tied the chain together: program → AST of path constraints → SAT/SMT (Z3) → concrete exploit input (angr). | 2026-07-20 |
 <!-- tracks:auto:end -->
 
 ---
@@ -123,6 +124,13 @@ i am still very new to the field of tech and cybersecurity. my goal is to become
 | Git vs. GitHub (local vs. remote) | Applying | Corrected "GitHub wraps the git command"; grasped Git = local distributed VCS, GitHub = one remote host + collab layer; used `origin` / `origin/main` / push / fetch / pull. | 2026-07-19 |
 | Merge-conflict resolution (keep-both) | Applying | Understood a conflict isn't "pick a winner"; kept both real sessions, drove the ordering, checked for leftover markers, used `add` to signal resolved. | 2026-07-19 |
 | Merge vs. rebase | Learning | Learned rebase replays commits onto the remote tip and rewrites hashes (new parent → new hash); chose merge deliberately. | 2026-07-19 |
+| AST root = last-evaluated operation | Applying | Initially picked the left-most/first token (reading order); after the rule, independently identified `∧` as root of `(a ∨ b) ∧ ¬c`. | 2026-07-20 |
+| AST arity → child count | Applying | Derived unary (`¬`, 1 child) vs binary (`∧ ∨ + *`, 2 children) himself; saw `-x` vs `x - y` as same symbol, different shape. | 2026-07-20 |
+| Internal node (operator) vs leaf (operand) | Applying | Produced "leaves = data, branches = moving parts" unaided; leaf defined by "no children," not "at the bottom"; operand/operator vocab slip corrected. | 2026-07-20 |
+| Literal vs variable reference | Learning | Category error first (called var names literals, `/` a var-ref); after "can you read the value off the page?" test, classified `speed * 1.5 + buffer` correctly. | 2026-07-20 |
+| AST construction from an expression | Applying | Drew `eta = distance / speed` correctly and unaided — root `=`, left `eta`, right `/` over `distance`/`speed`. | 2026-07-20 |
+| Bottom-up (post-order) tree evaluation | Applying | Derived independently ("work up from the bottom and solve"); explained why SAT solving parses to a tree first. | 2026-07-20 |
+| Why "abstract" (AST discards surface syntax) | Applying | Answered that `a = b + c * d` and `a = b + (c * d)` yield the same tree; parentheses become tree shape, not tokens. | 2026-07-20 |
 <!-- skills:auto:end -->
 
 ---
@@ -138,6 +146,9 @@ i am still very new to the field of tech and cybersecurity. my goal is to become
 - **Boolean algebra:** negating a combination — I push ¬ onto each variable but leave the connective unflipped (De Morgan).
 - **Git:** I conflate "staging" with "committing" — `add` stages to the index, `commit` writes the snapshot; they're separate zones.
 - **Git:** I model a branch as a copy/snapshot of files — it's a movable ~40-byte pointer to a single commit, not a copy.
+- **AST/parsing:** I read the root as the first / left-most token — the root is the operation evaluated **last** (evaluation order, not reading order).
+- **AST:** I swap "operator" and "operand" — operators are internal nodes (the moving parts); operands are leaves (the data).
+- **AST leaves:** test "can I read the value straight off the page?" — yes → literal, no → variable reference; an operator like `/` is neither.
 <!-- traps:auto:end -->
 
 **Writing typos to flag** *(hand-owned)*
