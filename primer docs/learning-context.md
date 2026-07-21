@@ -82,7 +82,7 @@ i am still very new to the field of tech and cybersecurity. my goal is to become
 
 ## 5. Skills / concepts  *(the tracked list — the tool updates this)*
 
-**Recently mastered:** Commit as immutable hashed snapshot (2026-07-19); Git divergence & pull-before-work (2026-07-19); Unit clause & unit propagation (2026-07-19).
+**Recently mastered:** AST root = last operation (2026-07-20); Commit as immutable hashed snapshot (2026-07-19); Git divergence & pull-before-work (2026-07-19).
 
 <!-- skills:auto:start -->
 | Skill | Stage | Evidence | Last touched |
@@ -124,7 +124,7 @@ i am still very new to the field of tech and cybersecurity. my goal is to become
 | Git vs. GitHub (local vs. remote) | Applying | Corrected "GitHub wraps the git command"; grasped Git = local distributed VCS, GitHub = one remote host + collab layer; used `origin` / `origin/main` / push / fetch / pull. | 2026-07-19 |
 | Merge-conflict resolution (keep-both) | Applying | Understood a conflict isn't "pick a winner"; kept both real sessions, drove the ordering, checked for leftover markers, used `add` to signal resolved. | 2026-07-19 |
 | Merge vs. rebase | Learning | Learned rebase replays commits onto the remote tip and rewrites hashes (new parent → new hash); chose merge deliberately. | 2026-07-19 |
-| AST root = last-evaluated operation | Applying | Initially picked the left-most/first token (reading order); after the rule, independently identified `∧` as root of `(a ∨ b) ∧ ¬c`. | 2026-07-20 |
+| AST root = last-evaluated operation | Understood (self-reported) | Initially picked the left-most/first token (reading order); after the rule, independently identified `∧` as root of `(a ∨ b) ∧ ¬c`. Reports having it down. | 2026-07-20 |
 | AST arity → child count | Applying | Derived unary (`¬`, 1 child) vs binary (`∧ ∨ + *`, 2 children) himself; saw `-x` vs `x - y` as same symbol, different shape. | 2026-07-20 |
 | Internal node (operator) vs leaf (operand) | Applying | Produced "leaves = data, branches = moving parts" unaided; leaf defined by "no children," not "at the bottom"; operand/operator vocab slip corrected. | 2026-07-20 |
 | Literal vs variable reference | Learning | Category error first (called var names literals, `/` a var-ref); after "can you read the value off the page?" test, classified `speed * 1.5 + buffer` correctly. | 2026-07-20 |
