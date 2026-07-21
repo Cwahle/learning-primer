@@ -11,10 +11,12 @@ compare it against the current primer, and rewrite only the auto-managed section
 
 ## Inputs
 
-- **Argument (required):** a path to the transcript file to ingest
-  (e.g. `primer docs/transcripts/2026-07-15-bandit.md`).
-  - If no path is given, list the files in `primer docs/transcripts/` and ask the
-    user which one to use. Do not guess.
+- **Argument (optional):** a path to the transcript file to ingest
+  (e.g. `primer docs/transcripts/2026-07-15-bandit.md`). Pass one only to **override**
+  the automatic pick.
+  - **If no path is given — the normal case — auto-select the transcript by recency**
+    (see "Selecting the transcript" below). Do **not** list files and ask the user which
+    to use; the whole point is that the skill runs unattended.
 - **Flags (optional):**
   - `--dry-run` — show the change report and proposed edits but write nothing.
     Do **not** pull, write, commit, or push; instead `git fetch` and note in the
@@ -26,6 +28,33 @@ compare it against the current primer, and rewrite only the auto-managed section
   - Default (no flag) — **preview-then-confirm**: pull first, show the report and
     proposed edits, then ask the user to confirm before writing. On confirmation,
     write, commit, and push.
+
+## Selecting the transcript
+
+When no path argument is given (the default), pick the transcript to ingest
+automatically — no prompting:
+
+1. List the regular files in `primer docs/transcripts/`.
+2. Exclude non-transcripts: `README.md`, dotfiles, and anything that isn't a `.md`
+   transcript.
+3. Choose the file with the **most recent modification time (mtime)** — the one closest
+   to now. This is intentionally naming-agnostic: it doesn't matter whether the date sits
+   at the front (`2026-07-20-topic.md`) or back (`topic-2026-07-20.md`) of the name, or is
+   absent entirely.
+4. Tie-break (rare): prefer the newer `YYYY-MM-DD` embedded in the filename, then fall
+   back to alphabetical order. Any deterministic choice is acceptable.
+5. If the directory has no eligible transcript, **stop and report** — never invent one.
+
+Resolve it in one command from the project root, e.g.:
+
+```
+ls -t "primer docs/transcripts/"*.md | grep -v '/README\.md$' | head -1
+```
+
+`ls -t` orders by mtime (newest first), so `head -1` is the pick. Always **name the file
+you selected** at the top of the change report so the user can confirm the right
+transcript was ingested. Auto-selection only chooses the file — it does **not** bypass
+the preview-then-confirm gate before writing.
 
 ## The primer file
 
@@ -154,7 +183,9 @@ hand-owned typo list below the markers.
 1. **Sync (pull):** follow the "Before any work — pull" steps in the Git sync section.
    Stop and report if the repo is dirty, diverged, or the pull fails. (Dry-run: `git
    fetch` and note behind/ahead status instead of pulling.)
-2. Resolve and read the primer file. Read the transcript file.
+2. **Select the transcript:** if a path argument was given, use it; otherwise auto-pick
+   the most-recently-modified transcript per "Selecting the transcript". Resolve and read
+   the primer file. Read the chosen transcript file.
 3. Work out the changes: track/skill promotions, new rows, date stamps, recently-
    mastered, recurring mistakes — following the rules above.
 4. Build the **change report** (format below).
@@ -177,6 +208,7 @@ hand-owned typo list below the markers.
 ```
 Primer update — <transcript filename> (<date>)
 
+📄 Ingested   <transcript filename>  (<auto-selected: newest by mtime | path given>)
 ⇣ Pulled     origin/main (<up to date | fast-forwarded N commits>)
 ✎ Promoted   "<skill>"  <old stage> → <new stage>   (<why, from transcript>)
 ＋ Added      "<skill>"  (<stage>)   (<why>)
