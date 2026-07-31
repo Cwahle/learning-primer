@@ -50,13 +50,16 @@
 |---|---|---|---|
 | Low-level systems & memory | Applying | Stack growth direction & its role in buffer-overflow exploitation; wrote a C++ probe to determine stack direction at runtime using `volatile`, `asm volatile` barriers, dynamic loading (x86_64, WSL2). Don't dumb this down. | 2026-07-15 (seed) |
 | Linux / CLI | Applying | Roppers Linux Certificate; Bandit through ~L15; `find` scripting; bash fundamentals; netcat; OpenSSL SSL/TLS. | 2026-07-15 (seed) |
-| Security / CTF | Learning | Roppers Computing Fundamentals; OverTheWire Bandit; buffer-overflow theory. Security instinct: proactively refused to grant home-directory access before any guardrail was offered. | 2026-07-15 |
+| Security / CTF | Learning | Roppers Computing Fundamentals; OverTheWire Bandit; buffer-overflow theory. Security instinct: proactively refused to grant home-directory access before any guardrail was offered. CIA triad + authentication/authorization answered unaided at full marks on a Tech+ diagnostic — his strongest domain relative to entry-level cert material. | 2026-07-31 |
 | Git / GitHub | Applying | Deep session: commit = hashed snapshot + parent pointer; staging vs. commit (three zones); branch = movable pointer; fast-forward vs. two-parent merge; Git-vs-GitHub / distributed model; divergence. Ran a real merge-conflict resolution on `learning-primer` (resolve → add → commit → push, two-parent merge commit) and diagnosed the divergence root cause unaided. | 2026-07-19 |
 | Docker / containerization | Learning | namespaces, cgroups, Docker/WSL2 architecture. | 2026-07-15 (seed) |
 | Python | Learning | LeetCode at a beginner level (linked lists, sliding window). Comfortable reading more than writing from scratch. | 2026-07-15 (seed) |
 | Message brokers / event-driven | Learning | Producer/consumer/message, decoupling (space/time/rate), pub/sub vs. work queue, acks, durability, delivery semantics, idempotency; derived at-least-once & idempotency unaided from a deli-counter model, anchored to `ais-tracker` pub/sub. | 2026-07-15 |
 | SAT solvers / constraint solving | Learning | Built DPLL from first principles by hand (unit propagation, decisions, backtracking, UNSAT via exhausted decision space). Executed a full CDCL cycle on a rigged formula: derived the learned clause, identified backjump target. Motivated by symbolic execution / angr / Z3 on the security side. | 2026-07-19 |
-| Compilers / language tooling | Learning | Abstract syntax trees from first principles: root = last-evaluated op, arity → child count, operator(internal)/operand(leaf), literal vs variable reference, discards surface syntax ("abstract"), post-order/bottom-up evaluation. Drew `eta = distance / speed` unaided. Tied the chain together: program → AST of path constraints → SAT/SMT (Z3) → concrete exploit input (angr). | 2026-07-20 |
+| Compilers / language tooling | Learning | Abstract syntax trees from first principles: root = last-evaluated op, arity → child count, operator(internal)/operand(leaf), literal vs variable reference, discards surface syntax ("abstract"), post-order/bottom-up evaluation. Drew `eta = distance / speed` unaided. Tied the chain together: program → AST of path constraints → SAT/SMT (Z3) → concrete exploit input (angr). Compiled-vs-interpreted distinction stated unaided; learned CPython's source → tokens → AST → bytecode → VM pipeline, connecting the AST work to Python's own implementation. | 2026-07-31 |
+| CompTIA Tech+ (FC0-U71) certification | Learning | Goal: sit the exam in 2–4 weeks (set 2026-07-31). 10-question diagnostic across all six domains: full marks on Security; single-point corrections on IT concepts, applications, software dev; confirmed zeros in Infrastructure and Databases. 3-week per-domain study plan agreed; one session per domain to keep transcripts attributable. | 2026-07-31 |
+| Networking & hardware infrastructure | New | Confirmed gap from the Tech+ diagnostic: could not define a switch at all; router described only as "sends traffic where it needs to go." Volatile/non-volatile storage partially known. Weeks 1–2 of the study plan. | 2026-07-31 |
+| Databases & data modeling | New | Confirmed total gap — self-reported honestly rather than guessed. No exposure to the relational model, primary/foreign keys, or DB-vs-flat-file reasoning. Largest single hole; first block of the study plan, anchored to `ais-tracker` vessel data. | 2026-07-31 |
 <!-- tracks:auto:end -->
 
 ---
@@ -82,7 +85,7 @@ i am still very new to the field of tech and cybersecurity. my goal is to become
 
 ## 5. Skills / concepts  *(the tracked list — the tool updates this)*
 
-**Recently mastered:** AST root = last operation (2026-07-20); Commit as immutable hashed snapshot (2026-07-19); Git divergence & pull-before-work (2026-07-19).
+**Recently mastered:** CIA triad (2026-07-31); Authentication vs. authorization (2026-07-31); AST root = last operation (2026-07-20).
 
 <!-- skills:auto:start -->
 | Skill | Stage | Evidence | Last touched |
@@ -131,6 +134,19 @@ i am still very new to the field of tech and cybersecurity. my goal is to become
 | AST construction from an expression | Applying | Drew `eta = distance / speed` correctly and unaided — root `=`, left `eta`, right `/` over `distance`/`speed`. | 2026-07-20 |
 | Bottom-up (post-order) tree evaluation | Applying | Derived independently ("work up from the bottom and solve"); explained why SAT solving parses to a tree first. | 2026-07-20 |
 | Why "abstract" (AST discards surface syntax) | Applying | Answered that `a = b + c * d` and `a = b + (c * d)` yield the same tree; parentheses become tree shape, not tokens. | 2026-07-20 |
+| Hexadecimal ↔ binary (16 = 2⁴) | Learning | `0xFF` = 255 correct, but justified hex as "doubles when adding another digit"; corrected to one hex digit = exactly 4 bits, which is why hex maps cleanly onto bytes and decimal doesn't. | 2026-07-31 |
+| Binary vs. decimal storage units (MB/MiB) | Learning | Attributed a "500 GB → 465" drive to partitioning/filesystem overhead; corrected to a units mismatch — makers use decimal GB, the OS reports binary GiB but still labels it "GB". | 2026-07-31 |
+| Data-rate → volume arithmetic | Learning | Computed daily volume with 1,440 intervals (minutes) for a one-per-10-seconds rate; off by exactly 6×. Correct: 8,640 intervals ≈ 778 MB/day for the `ais-tracker` scenario. | 2026-07-31 |
+| Volatile vs. non-volatile storage | Learning | Correctly identified RAM as losing contents on power loss but didn't name the property. Learned the C++ `volatile` keyword is an unrelated mechanism (optimization barrier) sharing only etymology — the keyword that made his stack-direction probe work. | 2026-07-31 |
+| Firmware → driver → OS → application stack | Learning | Produced the correct sequence but reversed when asked closest-to-hardware first. Driver definition corrected from "interpreter for input devices" to the device-specific translator between the OS's generic requests and any hardware's own command set. | 2026-07-31 |
+| Compiled vs. interpreted execution | Applying | Stated the core distinction unaided (compiler → machine code vs. interpreter executing at runtime); flagged his own uncertainty about the exact path rather than bluffing. | 2026-07-31 |
+| CPython bytecode pipeline | New | Learned Python is neither cleanly compiled nor interpreted — source → tokens → AST → bytecode (`.pyc`) → VM. Connects the AST session directly to Python's own implementation. Not yet explained back. | 2026-07-31 |
+| Structured / semi-structured / unstructured data | Learning | Labeled JSON as structured (it's the canonical semi-structured example); "raw binary" as unstructured was correct. Test installed: fixed row/column schema → structured; self-describing tags, no rigid schema → semi-structured; no model → unstructured. His `aisstream.io` feed is the semi-structured anchor. | 2026-07-31 |
+| CIA triad | Understood (evidence) | Named confidentiality/integrity/availability unaided and correctly applied it to a novel scenario — ransomware with no backups breaks availability. Addition offered: double-extortion breaks confidentiality too. | 2026-07-31 |
+| Authentication vs. authorization | Understood (evidence) | Crisp, unaided, correct: "authentication is proving who you are and authorization is do you have permission to do this." | 2026-07-31 |
+| Router vs. switch vs. access point | New | Confirmed gap — could not define a switch at all; router described loosely as "sends traffic where it needs to go." No instruction given yet; scheduled for Infrastructure I. | 2026-07-31 |
+| Software licensing models | New | Confirmed gap — only "open source" known, and not confidently as a licensing model. Deferred to the Applications & OS session (trap to watch: open source ≠ free ≠ public domain). | 2026-07-31 |
+| Relational database fundamentals | New | Confirmed total gap, self-reported honestly rather than guessed — primary keys, foreign keys, and DB-vs-flat-file reasoning all untouched. First block of the study plan. | 2026-07-31 |
 <!-- skills:auto:end -->
 
 ---
@@ -149,6 +165,12 @@ i am still very new to the field of tech and cybersecurity. my goal is to become
 - **AST/parsing:** I read the root as the first / left-most token — the root is the operation evaluated **last** (evaluation order, not reading order).
 - **AST:** I swap "operator" and "operand" — operators are internal nodes (the moving parts); operands are leaves (the data).
 - **AST leaves:** test "can I read the value straight off the page?" — yes → literal, no → variable reference; an operator like `/` is neither.
+- **Positional notation:** I say a digit "doubles" the range — each digit multiplies by the **base**; hex pairs with binary because 16 = 2⁴, so one hex digit = exactly 4 bits.
+- **Rate arithmetic:** check what unit the interval is actually in before multiplying out to a daily total — I used 1,440 (minutes/day) for a one-per-10-seconds rate and came out 6× low.
+- **"Missing" drive capacity:** I reach for partitioning / filesystem overhead — the real cause is decimal GB (manufacturer) vs. binary GiB (OS), not consumed space.
+- **Ordering direction:** asked to order things *X-first*, I give the list in the opposite direction — the relationship is right, the direction flips (same shape as the AST-root trap above). Re-read which end the prompt asked for.
+- **Data classification:** JSON is **semi-structured**, not structured — test with "fixed row/column schema? self-describing tags but no rigid schema? no model at all?"
+- **False friend:** storage *volatile* (contents lost on power off) vs. C++ `volatile` (compiler optimization barrier) — same word, unrelated mechanisms.
 <!-- traps:auto:end -->
 
 **Writing typos to flag** *(hand-owned)*
