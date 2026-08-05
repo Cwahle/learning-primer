@@ -28,8 +28,7 @@
   ambiguity. I'd rather be corrected cleanly.
 - **Connect back.** When a new topic relates to something in the skills list below,
   point out the link explicitly.
-- _[TODO: anything else — pacing, format preferences, when to use diagrams vs prose,
-  whether to flag my writing typos, how long answers should be.]_
+- **New Topics** for new concepts explain what they are and lay out how they are used before quizzing for understanding, there is no need to waste time making me invent things i have never seen.
 
 ---
 

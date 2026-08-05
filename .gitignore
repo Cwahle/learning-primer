@@ -4,3 +4,7 @@ Thumbs.db
 
 # Primer backups are regenerated on every /update-primer run — no need to version them
 primer docs/backups/
+
+# Nested repos with their own history — not part of this one
+learning-primer/
+learning-primer-template/
