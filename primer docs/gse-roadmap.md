@@ -113,22 +113,22 @@ None of this is GIAC material. All of it is assumed by GIAC material.
 ### 0.1 Networking — the confirmed gap, highest priority
 
 - [ ] What a **collision domain** and a **broadcast domain** are, and why they motivated switches
-- [ ] **Hub** vs **switch**: repeat-to-all-ports vs. forward-by-learned-MAC
-- [ ] MAC address table / CAM table — how a switch *learns* which port a MAC is on
-- [ ] What a switch does with an unknown destination MAC (flooding)
-- [ ] **Router** vs switch: layer 3 vs layer 2, routes between networks vs within one
+- [x] **Hub** vs **switch**: repeat-to-all-ports vs. forward-by-learned-MAC
+- [x] MAC address table / CAM table — how a switch *learns* which port a MAC is on
+- [x] What a switch does with an unknown destination MAC (flooding)
+- [x] **Router** vs switch: layer 3 vs layer 2, routes between networks vs within one
 - [ ] **Access point** — bridging wireless clients into a wired L2 segment
 - [ ] Why a home "router" is really router + switch + AP + firewall + DHCP in one box
 - [ ] OSI 7-layer model — each layer's job, and one real protocol at each
 - [ ] TCP/IP 4-layer model, and how it maps onto OSI
 - [ ] Encapsulation: how a payload gains headers going down the stack, sheds them going up
-- [ ] IPv4 address structure — network portion vs host portion
-- [ ] Subnet masks and CIDR notation (`/24`), by hand, in binary
+- [x] IPv4 address structure — network portion vs host portion
+- [x] Subnet masks and CIDR notation (`/24`), by hand, in binary
 - [ ] Calculate network address, broadcast address, usable host range for a given CIDR
 - [ ] Private (RFC1918) vs public address space
 - [ ] **NAT** — why it exists, what it breaks
-- [ ] Default gateway — what it means for a host to "not know" a route
-- [ ] **ARP** — resolving IP → MAC, and why it's trust-on-first-use (sets up ARP spoofing later)
+- [x] Default gateway — what it means for a host to "not know" a route
+- [x] **ARP** — resolving IP → MAC, and why it's trust-on-first-use (sets up ARP spoofing later)
 - [ ] **DNS** resolution walkthrough: recursive resolver → root → TLD → authoritative
 - [ ] DNS record types: A, AAAA, CNAME, MX, TXT, PTR, NS
 - [ ] **DHCP** DORA sequence
